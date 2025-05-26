@@ -12,20 +12,26 @@ print("Tentativa: ", tentativas)
 print("O intervalo agora está entre: ", menor_numero, "a", maior_numero)
 print("----------------------------")
 
+# Pega o primeiro palpite do usuário
 palpite = int(input("Diga um número: "))
 
 acerto = 0
 
+# Se o palpite for o número sorteado, ganhou.
 if palpite == numero_sorteado:
     print("Parabéns, você acertou!")
     acerto = 1
+# Verifica se o número está antes ou depois do palpite
 if palpite < numero_sorteado:
     menor_numero = palpite + 1
 else:
     maior_numero = palpite - 1
 
+# Incrementa uma tentativa
 tentativas += 1
 
+
+## Repete para as outras 3 tentativas. (Dava pra fazer com um while)
 ## tentativa 2
 
 if acerto == 0:
