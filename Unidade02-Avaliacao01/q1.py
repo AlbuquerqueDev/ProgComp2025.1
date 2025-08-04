@@ -174,6 +174,21 @@ def listar_mac():
             return
 
 
+def salvar_arquivo():
+    nome = input("\nInforme o nome do arquivo .txt que será gerado> ").strip()
+
+    if not nome.lower().endswith(".txt"):
+        nome += ".txt"
+    try:
+        with open(nome, "w") as fd:
+            for cpf, macs in banco.items():
+                linha = f"{cpf}|{'|'.join(macs)}\n"
+                fd.write(linha)
+        print(f"\nArquivo de texto gerado com sucesso -> {nome}.")
+    except Exception as e:
+        print(f"\nErro durante o salvamento do arquivo> {e}")
+
+
 inicio = True
 
 
@@ -210,6 +225,8 @@ def menu():
                     listar_cpfs()
                 case "6":
                     listar_mac()
+                case "7":
+                    salvar_arquivo()
                 case "0":
                     print("\nFinalizando programa...")
                     break
