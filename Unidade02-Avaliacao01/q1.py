@@ -1,3 +1,4 @@
+from tabulate import tabulate
 # Q1
 # Alunos:
 # Pedro Vinicius Morais Silva de Albuquerque
@@ -53,7 +54,7 @@ def continuar(opcao: str):
 def cadastrar_cpf():
     global inicio
     while True:
-        cpf = input("\nInforme um CPF (apenas números)> ").strip()
+        cpf = input("\nInforme um CPF (apenas números)> ")
         if not validar_cpf(cpf):
             continue
         if cpf in banco:
@@ -71,7 +72,7 @@ def cadastrar_cpf():
 def cadastrar_mac():
     global inicio
     while True:
-        cpf = input("\nInforme um CPF (apenas números)> ").strip()
+        cpf = input("\nInforme um CPF (apenas números)> ")
         if not validar_cpf(cpf):
             continue
         if cpf not in banco:
@@ -89,41 +90,135 @@ def cadastrar_mac():
                 return
 
 
+def remover_mac():
+    global inicio
+    while True:
+        cpf = input("\nInforme um CPF (apenas números)> ")
+        if not validar_cpf(cpf):
+            continue
+        if cpf not in banco:
+            print("\nCPF não encontrado, tente novamente...")
+            continue
+        mac = input("\nDigite o endereço MAC para remover> ").strip().upper()
+        if mac in banco[cpf]:
+            banco[cpf].remove(mac)
+            print("\nEndereço MAC removido com sucesso!")
+            opcao = (
+                input("\nDeseja remover outro endereço MAC? [Y/n]> ").strip().lower()
+            )
+            if not continuar(opcao):
+                return
+        else:
+            print("\nEndereço MAC não encontrado :(")
+            return
+
+
+def remover_cpf():
+    global inicio
+    while True:
+        cpf = input("\nInforme o CPF para remover (apenas números)> ")
+        if not validar_cpf(cpf):
+            continue
+        if cpf not in banco:
+            print("\nCPF não encontrado, tente novamente...")
+            continue
+        if banco[cpf]:
+            print("\nNão é possível remover CPFs com endereços MAC vinculados.")
+            continue
+        else:
+            del banco[cpf]
+            print("\nCPF removido com sucesso.")
+            opcao = input("\nDeseja remover outro CPF? [Y/n]> ")
+            if not continuar(opcao):
+                return
+
+
+def listar_cpfs():
+    global inicio
+    while True:
+        if not banco:
+            print("\nNenhum CPF cadastrado no banco.")
+        tabela = [[i + 1, cpf] for i, cpf in enumerate(banco.keys())]
+        titulo = ["#", "CPF"]
+        print(tabulate(tabela, headers=titulo, tablefmt="grid"))
+        opcao = (
+            input("\nDeseja salvar essa tabela em um banco de dados? [Y/n]> ")
+            .strip()
+            .lower()
+        )
+        if not continuar(opcao):
+            return
+
+
+def listar_mac():
+    global inicio
+    while True:
+        cpf = input("\nInforme um CPF (apenas números)> ")
+        if not validar_cpf(cpf):
+            continue
+        if cpf not in banco:
+            print("\nCPF não encontrado, tente novamente...")
+            continue
+        if not banco[cpf]:
+            print("\nNenhum endereço MAC encontrado para esse CPF")
+            return
+        tabela = [[i + 1, mac] for i, mac in enumerate(banco[cpf])]
+        titulo = ["#", "Endereço MAC"]
+        print(tabulate(tabela, headers=titulo, tablefmt="grid"))
+        opcao = (
+            input("\nDeseja salvar essa tabela num banco de dados? [Y/n]> ")
+            .strip()
+            .lower()
+        )
+        if not continuar(opcao):
+            return
+
+
 inicio = True
 
 
 def menu():
     while True:
-        global inicio
-        if inicio:
-            print(BANNER)
-        print("\nMenu para cadastramento de MAC address")
-        print("\nDigite o menu que deseja acessar:\n")
-        print("   1 - Cadastrar CPF")
-        print("   2 - Adicionar um endereço MAC a um CPF")
-        print("   3 - Remover um endereço MAC de um CPF")
-        print("   4 - Remover CPF")
-        print("   5 - Listar CPFs cadastrados.")
-        print("   6 - Listar MACs vinculados a um CPF")
-        print("   7 - Salvar banco de dados")
-        print("   8 - Ler um banco de dados")
-        print("   0 - Fechar o programa\n")
+        try:
+            global inicio
+            if inicio:
+                print(BANNER)
+            print("\nMenu para cadastramento de MAC address")
+            print("\nDigite o menu que deseja acessar:\n")
+            print("   1 - Cadastrar CPF")
+            print("   2 - Adicionar um endereço MAC a um CPF")
+            print("   3 - Remover um endereço MAC de um CPF")
+            print("   4 - Remover CPF")
+            print("   5 - Listar CPFs cadastrados.")
+            print("   6 - Listar MACs vinculados a um CPF")
+            print("   7 - Salvar banco de dados")
+            print("   8 - Ler um banco de dados")
+            print("   0 - Fechar o programa\n")
 
-        opcao = input("Escolha uma opção> ")
+            opcao = input("Escolha uma opção> ")
 
-        match opcao:
-            case "1":
-                cadastrar_cpf()
-            case "2":
-                cadastrar_mac()
-            #            case "3":
-            #                remover_mac()
-            case "0":
-                print("\nFinalizando programa...")
-                break
-            case _:
-                inicio = False
-                print("\nOpção inválida :(")
+            match opcao:
+                case "1":
+                    cadastrar_cpf()
+                case "2":
+                    cadastrar_mac()
+                case "3":
+                    remover_mac()
+                case "4":
+                    remover_cpf()
+                case "5":
+                    listar_cpfs()
+                case "6":
+                    listar_mac()
+                case "0":
+                    print("\nFinalizando programa...")
+                    break
+                case _:
+                    inicio = False
+                    print("\nOpção inválida :(")
+        except (KeyboardInterrupt, EOFError):
+            print("\nAbortando... x_x")
+            break
 
 
 if __name__ == "__main__":
