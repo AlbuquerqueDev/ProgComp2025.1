@@ -138,15 +138,11 @@ def listar_cpfs():
     while True:
         if not banco:
             print("\nNenhum CPF cadastrado no banco.")
-        tabela = [[i + 1, cpf] for i, cpf in enumerate(banco.keys())]
-        titulo = ["#", "CPF"]
-        print(tabulate(tabela, headers=titulo, tablefmt="grid"))
-        opcao = (
-            input("\nDeseja salvar essa tabela em um banco de dados? [Y/n]> ")
-            .strip()
-            .lower()
-        )
-        if not continuar(opcao):
+            return
+        else:
+            tabela = [[i + 1, cpf] for i, cpf in enumerate(banco.keys())]
+            titulo = ["#", "CPF"]
+            print(tabulate(tabela, headers=titulo, tablefmt="grid"))
             return
 
 
@@ -156,6 +152,9 @@ def listar_mac():
         cpf = input("\nInforme um CPF (apenas números)> ")
         if not validar_cpf(cpf):
             continue
+        if not banco:
+            print("\nNenhum cpf cadastrado no banco de dados.")
+            return
         if cpf not in banco:
             print("\nCPF não encontrado, tente novamente...")
             continue
@@ -164,14 +163,9 @@ def listar_mac():
             return
         tabela = [[i + 1, mac] for i, mac in enumerate(banco[cpf])]
         titulo = ["#", "Endereço MAC"]
-        print(tabulate(tabela, headers=titulo, tablefmt="grid"))
-        opcao = (
-            input("\nDeseja salvar essa tabela num banco de dados? [Y/n]> ")
-            .strip()
-            .lower()
-        )
-        if not continuar(opcao):
-            return
+        print(f"\nEndereços MAC vinculados ao cpf> {cpf}")
+        print("\n", tabulate(tabela, headers=titulo, tablefmt="grid"))
+        return
 
 
 def salvar_arquivo():
@@ -182,11 +176,33 @@ def salvar_arquivo():
     try:
         with open(nome, "w") as fd:
             for cpf, macs in banco.items():
-                linha = f"{cpf}|{'|'.join(macs)}\n"
+                linha = f"{cpf}|{' - '.join(macs)}\n"
                 fd.write(linha)
         print(f"\nArquivo de texto gerado com sucesso -> {nome}.")
     except Exception as e:
         print(f"\nErro durante o salvamento do arquivo> {e}")
+
+
+def carregar_arquivo():
+    nome = input("\nInforme o nome do arquivo de texto para ser lido> ").strip()
+
+    try:
+        with open(nome, "r") as fd:
+            global banco
+            banco = {}
+            for linha in fd:
+                cpf, macs_aux = linha.strip().split("|")
+                if macs_aux:
+                    macs = macs_aux.split(" - ")
+                else:
+                    macs = []
+                banco[cpf] = macs
+        print("\nArquivo carregado com sucesso.")
+    except FileNotFoundError:
+        print("\nArquivo não encontrado.")
+        return
+    except Exception as e:
+        print(f"\nErro ao carregar o arquivo> {e}")
 
 
 inicio = True
@@ -227,6 +243,8 @@ def menu():
                     listar_mac()
                 case "7":
                     salvar_arquivo()
+                case "8":
+                    carregar_arquivo()
                 case "0":
                     print("\nFinalizando programa...")
                     break
