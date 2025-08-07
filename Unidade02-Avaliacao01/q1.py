@@ -28,17 +28,17 @@ BANNER = r"""
 banco = {}
 
 
-def validar_cpf(cpf: str):
+def validar_cpf(cpf: str): #verifica se a string cpf é composta apenas por dígitos
     if not cpf.isdigit():
         print("\nDigite apenas números!")
         return False
-    if len(cpf) != 11:
+    if len(cpf) != 11: #verifica se o cpf tem o comprimento de 11 digitos
         print("\nUm CPF precisa ter 11 dígitos!")
         return False
-    return True
+    return True #se estiver dentro das condições o cpf é considerado válido
 
 
-def continuar(opcao: str):
+def continuar(opcao: str): 
     global inicio
     if opcao == "n":
         print("\nRetornando ao menu principal...")
@@ -55,35 +55,35 @@ def cadastrar_cpf():
     global inicio
     while True:
         cpf = input("\nInforme um CPF (apenas números)> ")
-        if not validar_cpf(cpf):
+        if not validar_cpf(cpf): #valida o cpf, se for inválido o loop continua
             continue
-        if cpf in banco:
+        if cpf in banco: #verifica se o cpf já existe no dicionário banco
             print("\nCPF já cadastrado no banco de dados!")
             continue
-        else:
+        else: #se o cpf não existir, adiciona ao dicionário com uma lista vazia
             banco[cpf] = []
             print("\nCPF Cadastrado com sucesso!")
 
-        opcao = input("\nDeseja cadastrar outro CPF? [Y/n]> ").strip().lower()
+        opcao = input("\nDeseja cadastrar outro CPF? [Y/n]> ").strip().lower() #da a opção de continuar
         if not continuar(opcao):
             return
 
 
-def cadastrar_mac():
+def cadastrar_mac(): #vincula um endereço MAC a um cpf existente
     global inicio
     while True:
-        cpf = input("\nInforme um CPF (apenas números)> ")
+        cpf = input("\nInforme um CPF (apenas números)> ") #valida o cpf e continua o loop se for invalido
         if not validar_cpf(cpf):
-            continue
-        if cpf not in banco:
+            continue 
+        if cpf not in banco: #verifica se o cpf esta cadastrado no banco
             print("\nCPF não encontrado, tente novamente...")
             continue
         mac = input("\nDigite o endereço MAC> ").strip()
 
-        if mac in banco[cpf]:
+        if mac in banco[cpf]: #verifica se o endereço MAC ja esta na lista do cpf
             print("\nMAC já cadastrado para esse CPF!")
-        else:
-            banco[cpf].append(mac.upper())
+        else: #adiciona o endereço mac a lista do cpf correspondente
+            banco[cpf].append(mac.upper()) 
             print(f"\nO endereço MAC: {mac} foi cadastrado e vinculado ao CPF {cpf}")
             opcao = input("\nDeseja adicionar outro MAC? [Y/n]> ").strip().lower()
             if not continuar(opcao):
