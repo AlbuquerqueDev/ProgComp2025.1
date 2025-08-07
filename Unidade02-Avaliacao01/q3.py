@@ -1,3 +1,5 @@
+# Pedro Vinicius Morais Silva de Albuquerque 20251014050038
+# Maria Vitoria da Silva 20251014050001
 import random
 
 
