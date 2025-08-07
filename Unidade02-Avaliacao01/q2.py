@@ -1,3 +1,5 @@
+# Pedro Vinicius Morais Silva de Albuquerque 20251014050038
+# Maria Vitoria da Silva 20251014050001
 def contar_palindromos():
     contador = 0
     for n in range(10, 100001):
@@ -6,7 +8,7 @@ def contar_palindromos():
     return contador
 
 
-def palindromo(numero):
+def eh_palindromo(numero):
     numero_original = numero
     numero_palindromo = 0
     while numero > 0:
