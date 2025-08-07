@@ -27,16 +27,40 @@ BANNER = r"""
 """
 banco = {}
 
-
-def validar_cpf(cpf: str): #verifica se a string cpf é composta apenas por dígitos
-    if not cpf.isdigit():
+def validar_cpf(cpf: str):
+    if type(cpf) != str:
+        return False
+    cpf = cpf.replace(".", "").replace("-", "")
+    if cpf.isdecimal() == False:
         print("\nDigite apenas números!")
         return False
-    if len(cpf) != 11: #verifica se o cpf tem o comprimento de 11 digitos
+    if len(cpf) != 11:
         print("\nUm CPF precisa ter 11 dígitos!")
         return False
-    return True #se estiver dentro das condições o cpf é considerado válido
+    
+    soma = 0
+    for pos in range (9):
+        soma += int(cpf[pos]) * (10 - pos)
+    dv1 = 11 - soma % 11
+    if dv1 >= 10: 
+        dv1 = 0
+        
+    if dv1 != int(cpf[9]):
+        print("\nCPF inválido.")
+        return False
+    
+    soma = 0
+    for pos in range (10):
+        soma += int(cpf[pos]) * (11 - pos)
+    dv2 = 11 - soma % 11
 
+    if dv2 >= 10: 
+        dv2 = 0
+    if dv2 != int(cpf[10]):
+        print(f"\nCPF inválido.")
+        return False
+        
+    return True
 
 def continuar(opcao: str): 
     global inicio
@@ -55,7 +79,7 @@ def cadastrar_cpf():
     global inicio
     while True:
         cpf = input("\nInforme um CPF (apenas números)> ")
-        if not validar_cpf(cpf): #valida o cpf, se for inválido o loop continua
+        if not validar_cpf(cpf): #valida o cpf, se for inválido, reinicia o loop para adicionar um CPF válido
             continue
         if cpf in banco: #verifica se o cpf já existe no dicionário banco
             print("\nCPF já cadastrado no banco de dados!")
@@ -63,8 +87,8 @@ def cadastrar_cpf():
         else: #se o cpf não existir, adiciona ao dicionário com uma lista vazia
             banco[cpf] = []
             print("\nCPF Cadastrado com sucesso!")
-
-        opcao = input("\nDeseja cadastrar outro CPF? [Y/n]> ").strip().lower() #da a opção de continuar
+            
+        opcao = input("\nDeseja cadastrar outro CPF? [Y/n]> ").strip().lower() # da a opção de continuar
         if not continuar(opcao):
             return
 
@@ -206,7 +230,6 @@ def carregar_arquivo():
 
 
 inicio = True
-
 
 def menu():
     while True:
