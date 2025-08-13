@@ -2,7 +2,6 @@
 # Maria Vitoria da Silva 20251014050001
 import random
 
-
 BANNER = r"""
  ______   _   _   _____   _____   _____
  |  _  \ | | | | |  ___| |_   _| |  _  |
@@ -25,147 +24,28 @@ mensagem_final = {
 }
 
 palavras = (
-    "ADAGA",
-    "ADUBO",
-    "AMIGO",
-    "ANEXO",
-    "ARAME",
-    "ARARA",
-    "ARROZ",
-    "ASILO",
-    "ASTRO",
-    "BAILE",
-    "BAIXA",
-    "BALAO",
-    "BALSA",
-    "BARCO",
-    "BARRO",
-    "BEIJO",
-    "BICHO",
-    "BORDA",
-    "BORRA",
-    "BRAVO",
-    "BREJO",
-    "BURRO",
-    "CAIXA",
-    "CALDO",
-    "CANJA",
-    "CARRO",
-    "CARTA",
-    "CERVO",
-    "CESTA",
-    "CLIMA",
-    "COBRA",
-    "COLAR",
-    "COQUE",
-    "COURO",
-    "CRAVO",
-    "DARDO",
-    "FAIXA",
-    "FARDO",
-    "FENDA",
-    "FERRO",
-    "FESTA",
-    "FLUOR",
-    "FORCA",
-    "FORNO",
-    "FORTE",
-    "FUNDO",
-    "GAITA",
-    "GARRA",
-    "GENIO",
-    "GESSO",
-    "GRADE",
-    "GRANA",
-    "GRAMA",
-    "GURIA",
-    "GREVE",
-    "GRUTA",
-    "HEROI",
-    "HOTEL",
-    "ICONE",
-    "IMPAR",
-    "IMUNE",
-    "INDIO",
-    "JUNTA",
-    "LAPIS",
-    "LARVA",
-    "LAZER",
-    "LENTO",
-    "LESTE",
-    "LIMPO",
-    "LIVRO",
-    "MACIO",
-    "MAGRO",
-    "MALHA",
-    "MANSO",
-    "MARCO",
-    "METAL",
-    "MORTE",
-    "MORRO",
-    "MURAL",
-    "MOVEL",
-    "NACAO",
-    "NINHO",
-    "NOBRE",
-    "NORMA",
-    "NORTE",
-    "NUVEM",
-    "PACTO",
-    "PALHA",
-    "PARDO",
-    "PARTE",
-    "PEDRA",
-    "PEDAL",
-    "PEIXE",
-    "PRADO",
-    "PISTA",
-    "POMBO",
-    "POETA",
-    "PONTO",
-    "PRATO",
-    "PRECO",
-    "PRESO",
-    "PROSA",
-    "PRUMO",
-    "PULGA",
-    "PULSO",
-    "QUEPE",
-    "RAIVA",
-    "RISCO",
-    "RITMO",
-    "ROSTO",
-    "ROUPA",
-    "SABAO",
-    "SALTO",
-    "SENSO",
-    "SINAL",
-    "SITIO",
-    "SONHO",
-    "SOPRO",
-    "SURDO",
-    "TARDE",
-    "TERNO",
-    "TERMO",
-    "TERRA",
-    "TIGRE",
-    "TINTA",
-    "TOLDO",
-    "TORRE",
-    "TRAJE",
-    "TREVO",
-    "TROCO",
-    "TRONO",
-    "TURMA",
-    "URUBU",
-    "VALSA",
-    "VENTO",
-    "VERDE",
-    "VISAO",
-    "VINHO",
-    "VIUVO",
-    "ZEBRA",
-)
+    "ADAGA", "ADUBO", "AMIGO", "ANEXO", "ARAME", "ARARA", "ARROZ",
+    "ASILO", "ASTRO", "BAILE", "BAIXA", "BALAO", "BALSA", "BARCO",
+    "BARRO", "BEIJO", "BICHO", "BORDA", "BORRA", "BRAVO", "BREJO",
+    "BURRO", "CAIXA", "CALDO", "CANJA", "CARRO", "CARTA", "CERVO",
+    "CESTA", "CLIMA", "COBRA", "COLAR", "COQUE", "COURO", "CRAVO",
+    "DARDO", "FAIXA", "FARDO", "FENDA", "FERRO", "FESTA", "FLUOR",
+    "FORCA", "FORNO", "FORTE", "FUNDO", "GAITA", "GARRA", "GENIO",
+    "GESSO", "GRADE", "GRANA", "GRAMA", "GURIA", "GREVE", "GRUTA",
+    "HEROI", "HOTEL", "ICONE", "IMPAR", "IMUNE", "INDIO", "JUNTA",
+    "LAPIS", "LARVA", "LAZER", "LENTO", "LESTE", "LIMPO", "LIVRO",
+    "MACIO", "MAGRO", "MALHA", "MANSO", "MARCO", "METAL", "MORTE",
+    "MORRO", "MURAL", "MOVEL", "NACAO", "NINHO", "NOBRE", "NORMA",
+    "NORTE", "NUVEM", "PACTO", "PALHA", "PARDO", "PARTE", "PEDRA",
+    "PEDAL", "PEIXE", "PRADO", "PISTA", "POMBO", "POETA", "PONTO",
+    "PRATO", "PRECO", "PRESO", "PROSA", "PRUMO", "PULGA", "PULSO",
+    "QUEPE", "RAIVA", "RISCO", "RITMO", "ROSTO", "ROUPA", "SABAO",
+    "SALTO", "SENSO", "SINAL", "SITIO", "SONHO", "SOPRO", "SURDO",
+    "TARDE", "TERNO", "TERMO", "TERRA", "TIGRE", "TINTA", "TOLDO",
+    "TORRE", "TRAJE", "TREVO", "TROCO", "TRONO", "TURMA", "URUBU",
+    "VALSA", "VENTO", "VERDE", "VISAO", "VINHO", "VIUVO", "ZEBRA"
+    
+    )
 
 PADRAO = "\033[00m"
 AMARELO = "\033[93m"
@@ -184,15 +64,18 @@ def checagem(palpite: str, segredo: str) -> str:
 
     # checa se o segredo já foi descoberto, (está vazio)
     if not segredo:
+        saida_acertada = ""
+        for letra in palpite:
+            saida_acertada += CINZA + letra + PADRAO
         # caso sim, retorna o palpite só que em cinza
-        return "".join(CINZA + letra + PADRAO for letra in palpite)
+        return saida_acertada
 
     # String que irá ser retornada no final da função
     # ao final das checagens, a string saída terá
     # o palpite do usuiário porém com as letras coloridas
     saida = ""
 
-    # enumerador que percorre o indice da letra (i) e a propria letra (letra) do palpite
+    # enumerador que percorre o indice da letra (i) e o proprio caracter (letra) do palpite
     for i, letra in enumerate(palpite):
         # Caso a letra está no mesmo indice que o segredo...
         if letra == segredo[i]:
@@ -201,7 +84,7 @@ def checagem(palpite: str, segredo: str) -> str:
         elif letra in segredo:  # se não se, a letra está na palavra...
             # então adiciona essa letra na cor amarela
             saida += AMARELO + letra + PADRAO
-        else:
+        else: # Palavra não está em segredo
             saida += CINZA + letra + PADRAO  # adciona a letra na cor cinza
     return saida  # retorna uma string com as letras nas cores certas
 
@@ -215,9 +98,10 @@ def pegar_palpite() -> str:
         palpite = input(f"\nDigite um palpite palpite> ").upper()
 
         # se o palpite tiver 5 caracteres e forem letras.
-        if len(palpite) == 5 and palpite.isalpha():
+        if len(palpite) == 5 and palpite.isalpha() and palpite in palavras:
             return palpite  # retorna o palpite
         print("\nPalpite inválido. (Digite 5 letras)")
+        
 
 
 def exibir_termo(tentativas):
@@ -229,7 +113,7 @@ def exibir_termo(tentativas):
     for i in range(7):  # Loop que representa cada linha do jogo.
         """
             Verifica se já existe uma tentativa feita para esta posição i
-            len(tentativas_coloridas) é o número de palpites que já foram dados
+            len(tentativas) é o número de palpites que já foram dados
             Se o índice i for menor que isso, significa que temos um palpite real para mostrar nessa linha
         """
         if i < len(tentativas):
@@ -262,6 +146,7 @@ def rodar_termo():
     tentativas = []  # variavel que armazena as tentativas do usuário, uma lista de tuplas
     if not tentativas:
         print(BANNER)
+    print(segredos_copia[0], segredos_copia[1])
     exibir_termo(tentativas)
 
     # repetição principal do jogo, que roda 7 vezes, uma para cada palpite
