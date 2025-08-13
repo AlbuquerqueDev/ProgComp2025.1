@@ -3,16 +3,18 @@
 import random
 
 
-# BANNER = r"""
-# ______   _   _   _____   _____   _____
-# |  _  \ | | | | |  ___| |_   _| |  _  |
-# | | | | | | | | | |__     | |   | | | |
-# | | | | | | | | |  __|    | |   | | | |
-# | |/ /  | |_| | | |___    | |   \ \_/ /
-# |___/    \___/  \____/    \_/    \___/
-# """
-#
+BANNER = r"""
+ ______   _   _   _____   _____   _____
+ |  _  \ | | | | |  ___| |_   _| |  _  |
+ | | | | | | | | | |__     | |   | | | |
+ | | | | | | | | |  __|    | |   | | | |
+ | |/ /  | |_| | | |___    | |   \ \_/ /
+ |___/    \___/  \____/    \_/    \___/
+"""
 
+# Dicionário com as mensagens finais.
+# chave: quantidade de tentativas
+# valores: mensagens das respectivas tentativas
 mensagem_final = {
     1: "Impossível",
     2: "Ninja",
@@ -21,6 +23,7 @@ mensagem_final = {
     5: "Pode melhorar",
     6: "Foi por pouco",
 }
+
 palavras = (
     "ADAGA",
     "ADUBO",
@@ -164,104 +167,134 @@ palavras = (
     "ZEBRA",
 )
 
-tentativas = []
-segredo1 = random.choice(palavras)
-segredo2 = random.choice(palavras)
-
-inicio = True
-# Impede que os segredos sejam iguais
-while segredo2 == segredo1:
-    segredo2 = random.choice(palavras)
-
 PADRAO = "\033[00m"
 AMARELO = "\033[93m"
 VERDE = "\033[92m"
 CINZA = "\033[97m"
 
 
-def checagem(palpite, segredo):
+def checagem(palpite: str, segredo: str) -> str:
+    """
+    Função que percorre as letras do palpite, e compara com o segredo
+    fazendo uma varredura para cada cor,
+    verde: letra está na posição certa;
+    amarelo: está na palavra mas na posição errada;
+    cinza: não está na palavra;
+    """
+
+    # checa se o segredo já foi descoberto, (está vazio)
     if not segredo:
-        return [CINZA + letra + PADRAO for letra in palpite]
+        # caso sim, retorna o palpite só que em cinza
+        return "".join(CINZA + letra + PADRAO for letra in palpite)
 
-    saida = ["", "", "", "", ""]
-    letras_segredo = list(segredo)
+    # String que irá ser retornada no final da função
+    # ao final das checagens, a string saída terá
+    # o palpite do usuiário porém com as letras coloridas
+    saida = ""
 
-    # checa letras verdes
-    for i in range(5):
-        if palpite[i] == letras_segredo[i]:
-            saida[i] = VERDE + palpite[i] + PADRAO
-            letras_segredo[i] = None
+    # enumerador que percorre o indice da letra (i) e a propria letra (letra) do palpite
+    for i, letra in enumerate(palpite):
+        # Caso a letra está no mesmo indice que o segredo...
+        if letra == segredo[i]:
+            # então adciona a letra, dessa vez verde, na string saida
+            saida += VERDE + letra + PADRAO
+        elif letra in segredo:  # se não se, a letra está na palavra...
+            # então adiciona essa letra na cor amarela
+            saida += AMARELO + letra + PADRAO
+        else:
+            saida += CINZA + letra + PADRAO  # adciona a letra na cor cinza
+    return saida  # retorna uma string com as letras nas cores certas
 
-    # checa letras amarelas
-    for i in range(5):
-        if saida[i] != "":
-            letra_palpite = palpite[i]
-            if letra_palpite in letras_segredo:
-                saida[i] = AMARELO + letra_palpite + PADRAO
-                letras_segredo[letras_segredo.index(letra_palpite)] = None
-            else:
-                saida[i] = CINZA + letra_palpite + PADRAO
-    return saida
+
+def pegar_palpite() -> str:
+    """
+    Função que pega um palpite válido do usuário
+    o loop é encerrado quando o usuário digita um palpite válido.
+    """
+    while True:
+        palpite = input(f"\nDigite um palpite palpite> ").upper()
+
+        # se o palpite tiver 5 caracteres e forem letras.
+        if len(palpite) == 5 and palpite.isalpha():
+            return palpite  # retorna o palpite
+        print("\nPalpite inválido. (Digite 5 letras)")
 
 
 def exibir_termo(tentativas):
+    """
+    Função que exibe a "tela" do termo, de 7 linhas e cada tentativa é linha1 e linha2
+    tentativas é uma tupla que contém (linha1, linha2)
+    """
     print()
-    for i in range(7):
+    for i in range(7):  # Loop que representa cada linha do jogo.
+        """
+            Verifica se já existe uma tentativa feita para esta posição i
+            len(tentativas_coloridas) é o número de palpites que já foram dados
+            Se o índice i for menor que isso, significa que temos um palpite real para mostrar nessa linha
+        """
         if i < len(tentativas):
+            # extrai a tupla para as variaveis linha1 e linha2
             linha1, linha2 = tentativas[i]
-            print("".join(linha1) + " | " + "".join(linha2))
-        else:
-            linha_vazia = CINZA + "_" + PADRAO
-            linha_vazia_aux = "".join([linha_vazia] * 5)
-            print(linha_vazia_aux + " | " + linha_vazia_aux)
-
-    print("\n\nPara debug:")
-    print(f"{AMARELO}texto em amarelo{PADRAO}")
-    print(f"{VERDE}texto em verde{PADRAO}")
-    print(f"{CINZA}texto em cinza{PADRAO}")
-    print(f"Segredo 1: {segredo1}")
-    print(f"Segredo 2: {segredo2}")
+            # exibe as linhas com os palpites armazenados em linha1 e linha2
+            print(linha1 + " | " + linha2)
+        else:  # Caso não exista uma tentativa
+            bloco = CINZA + "_" + PADRAO  # cria um bloco "_"
+            linha_vazia = bloco * 5  # cria uma linha composta por 5 blocos "_ _ _ _ _"
+            print(linha_vazia + " | " + linha_vazia)  # exibe a linha vazia
 
 
-ganhou = False
-for tentativa in range(1, 8):
-    # print(BANNER)
+def rodar_termo():
+    """
+    Função que "roda" o dueto
+    """
+
+    segredos = [
+        random.choice(palavras),
+        random.choice(palavras),
+    ]  # cria uma lista com 2 segredos
+
+    segredos_copia = segredos.copy()
+
+    # Enquanto um segredo for igual o outro, ache outro segredo.
+    while segredos[1] == segredos[0]:
+        segredos[1] = random.choice(palavras)
+
+    tentativas = []  # variavel que armazena as tentativas do usuário, uma lista de tuplas
+    if not tentativas:
+        print(BANNER)
     exibir_termo(tentativas)
 
-    while True:
-        palpite = input(f"Digite seu {tentativa}º palpite> ").strip().upper()
-        if len(palpite) != 5:
-            print("\nA palavra precisa ter 5 letras!")
-        elif palpite not in palavras:
-            print("\nPalavra inválida.")
-        else:
-            break
+    # repetição principal do jogo, que roda 7 vezes, uma para cada palpite
+    for n_tentativas in range(1, 8):
+        palpite = pegar_palpite()
 
-    linha1 = checagem(palpite, segredo1)
-    linha2 = checagem(palpite, segredo2)
-    tentativas.append((linha1, linha2))
+        # montando as duas colunas coloridas
+        linha1 = checagem(palpite, segredos[0])
+        linha2 = checagem(palpite, segredos[1])
+        tentativas.append((linha1, linha2))
 
-    acertou1 = palpite == segredo1
-    acertou2 = palpite == segredo2
+        # se o usuário acertar o palpite, torne o segredo para vazio
+        if palpite == segredos[0]:
+            segredos[0] = ""
+        if palpite == segredos[1]:
+            segredos[1] = ""
 
-    if acertou1 and acertou2:
         exibir_termo(tentativas)
-        print("\nDueto!")
 
-        if tentativa <= 6:
-            print(mensagem_final[tentativa])
-        ganhou = True
-        break
-    elif acertou1 or acertou2:
-        if acertou1:
-            segredo1 = ""
-        if acertou2:
-            segredo2 = ""
-        if segredo1 == "" and segredo2 == "":
-            exibir_termo(tentativas)
+        # se os dois estiverem vazios, então o usuário acertou os 2.
+        if segredos[0] == "" and segredos[1] == "":
             print("\nDueto!")
-            ganhou = True
-            break
-if not ganhou:
+            if n_tentativas in mensagem_final:
+                print(mensagem_final[n_tentativas])
+            return
+
     print("\nQue pena! :(")
-    print(f"As palavras eram: {segredo1} e {segredo2}")
+    print(f"\nOs segredos eram: {segredos_copia[0]} e {segredos_copia[1]}")
+
+
+# iniciando a função principal
+if __name__ == "__main__":
+    try:
+        rodar_termo()
+    except KeyboardInterrupt:
+        print("\nFinalizando o jogo...")
